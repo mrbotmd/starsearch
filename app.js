@@ -17,13 +17,18 @@ let apiCall = url => {
     })
     .then(data => {
       console.log(data);
-      let output = {
-        output: data.results,
-        next: data.next,
-        count: Math.ceil(data.count / 10)
-      };
-      console.log(output.count);
-      return output;
+      if (data.count) {
+        let output = {
+          output: data.results,
+          next: data.next,
+          count: Math.ceil(data.count / 10)
+        };
+        console.log("output");
+        return output;
+      } else {
+        console.log(data);
+        return data;
+      }
     })
     .catch(err => console.log(err));
 };
@@ -56,54 +61,89 @@ let buildPages = data => {
     url += i;
     nextPage.setAttribute("href", url);
     nextPage.setAttribute("class", "nextPage");
-    nextPage.innerHTML = nextPage.next;
     nextPage.textContent = "Next Page";
     searchResultField.appendChild(nextPage);
   }
 };
 
-let call = data => {
-  console.log(data);
+async function call(data) {
+  let link = data.toElement.text;
+  console.log(link);
+  let result = await apiCall(link);
+  console.log(result);
+  return result;
+}
+
+let buildPeopleResultForm = data => {
+  let resultList = document.createElement("ul");
+  data.output.forEach(character => {
+    let p = document.createElement("p");
+    let pLinks = document.createElement("p");
+    let li = document.createElement("li");
+    let article = document.createElement("article");
+    let articleHeader = document.createElement("header");
+    let h1 = document.createElement("h1");
+    let img = document.createElement("img");
+    let randomImg = "https://source.unsplash.com/random/150x150";
+    let div = document.createElement("div");
+    let br = document.createElement("br");
+    let links = option => {
+      if (typeof option === "string") {
+        let link = document.createElement("a");
+        link.setAttribute("href", "#");
+        link.addEventListener("click", call);
+        link.textContent = option;
+        p.appendChild(br);
+        p.appendChild(link);
+        return link;
+      } else {
+        option.forEach(item => {
+          let link = document.createElement("a");
+          link.setAttribute("href", item);
+          link.addEventListener("click", call);
+          link.textContent = item;
+          p.appendChild(br);
+          p.appendChild(link);
+          return link;
+        });
+      }
+    };
+    links(character.films);
+    links(character.species);
+    h1.textContent = character.name;
+    div.setAttribute("class", "container--flex");
+    p.innerHTML = `
+      Height: ${character.height} <br />
+      Mass: ${character.mass} <br />
+      Hair Color: ${character.hair_color} <br />
+      Skin Color: ${character.skin_color} <br />
+      Eye Color: ${character.eye_color} <br />
+      Birth Year: ${character.birth_year} <br />
+      Gender: ${character.gender} <br />`;
+    img.setAttribute("src", randomImg);
+    resultList.appendChild(li);
+    li.appendChild(article);
+    articleHeader.appendChild(h1);
+    article.appendChild(articleHeader);
+    article.appendChild(div);
+    div.appendChild(img);
+    div.appendChild(p);
+    div.appendChild(pLinks);
+    pLinks.appendChild(links(character.homeworld));
+  });
+  searchResultField.appendChild(resultList);
 };
 
-let buildArticle = data => {
+let buildResultForm = data => {
   if (optionSelector.value == "people") {
-    let ul = document.createElement("ul");
-    data.output.forEach(character => {
-      let article = document.createElement("article");
-      // console.log(character.films);
-      console.log(character);
-      let linkFilm;
-      let li = document.createElement("li");
-      character.films.forEach((item, i, arr) => {
-        linkFilm = document.createElement("a");
-        linkFilm.setAttribute("href", item);
-        linkFilm.addEventListener("click", call);
-        linkFilm.textContent = item;
-        li.appendChild(linkFilm);
-      });
-
-      article.innerHTML = `
-      ${character.name}
-      `;
-
-      // article.innerHTML = `
-      // <header><h1>Name: ${character.name}</h1></header>
-      // <p>Height: ${character.height} <br>
-      // Mass: ${character.mass} <br>
-      // </p>
-      // `;
-      searchResultField.appendChild(li);
-      li.appendChild(article);
-      console.log(linkFilm);
-    });
-    ul.appendChild(li);
+    buildPeopleResultForm(data);
   }
+  return data;
 };
 
 let build = data => {
   buildPages(data);
-  buildArticle(data);
+  buildResultForm(data);
 };
 
 const clear = () => {
