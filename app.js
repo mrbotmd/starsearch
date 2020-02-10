@@ -13,7 +13,7 @@ let apiCall = url => {
       return res.json();
     })
     .then(data => {
-      // console.log("data from fetch", data);
+      console.log("data from fetch", data);
       console.log(data);
       if (data.count) {
         let output = {
@@ -263,6 +263,7 @@ let buildResultForm = data => {
 
 let buildCharacterForm = data => {
   let article = document.createElement("article");
+  optionSelector.value = "people";
   let buildCharacter = character => {
     this.character = character;
     let img = document.createElement("img");
@@ -299,19 +300,19 @@ let buildCharacterForm = data => {
     div.appendChild(img);
     div.appendChild(p);
     div.appendChild(linksList);
-    if (character.films.length != 0) {
+    if (character.films !== null && character.films.length != 0) {
       linksList.appendChild(links(character.films, filmsList));
     }
-    if (character.homeworld.length != 0) {
+    if (character.homeworld !== null && character.homeworld.length != 0) {
       linksList.appendChild(links(character.homeworld, homeworldList));
     }
-    if (character.species.length != 0) {
+    if (character.species !== null && character.species.length != 0) {
       linksList.appendChild(links(character.species, speciesList));
     }
-    if (character.vehicles.length != 0) {
+    if (character.vehicles !== null && character.vehicles.length != 0) {
       linksList.appendChild(links(character.vehicles, vehiclesList));
     }
-    if (character.starships.length != 0) {
+    if (character.starships !== null && character.starships.length != 0) {
       linksList.appendChild(links(character.starships, starshipsList));
     }
   };
@@ -322,6 +323,7 @@ let buildCharacterForm = data => {
 
 let buildFilmForm = data => {
   let article = document.createElement("article");
+  optionSelector.value = "films";
   let buildFilm = films => {
     this.film = films;
     let img = document.createElement("img");
@@ -357,19 +359,19 @@ let buildFilmForm = data => {
     div.appendChild(img);
     div.appendChild(p);
     div.appendChild(linksList);
-    if (film.characters.length != 0) {
+    if (film.characters !== null && film.characters.length != 0) {
       linksList.appendChild(links(film.characters, charactersList));
     }
-    if (film.planets.length != 0) {
+    if (film.planets !== null && film.planets.length != 0) {
       linksList.appendChild(links(film.planets, planetsList));
     }
-    if (film.species.length != 0) {
+    if (film.species !== null && film.species.length != 0) {
       linksList.appendChild(links(film.species, speciesList));
     }
-    if (film.vehicles.length != 0) {
+    if (film.vehicles !== null && film.vehicles.length != 0) {
       linksList.appendChild(links(film.vehicles, vehiclesList));
     }
-    if (film.starships.length != 0) {
+    if (film.starships !== null && film.starships.length != 0) {
       linksList.appendChild(links(film.starships, starshipsList));
     }
   };
@@ -380,6 +382,7 @@ let buildFilmForm = data => {
 
 let buildPlanetForm = data => {
   let article = document.createElement("article");
+  optionSelector.value = "planets";
   let buildPlanet = planets => {
     this.planet = planets;
     let img = document.createElement("img");
@@ -415,10 +418,10 @@ let buildPlanetForm = data => {
     div.appendChild(img);
     div.appendChild(p);
     div.appendChild(linksList);
-    if (planet.residents.length != 0) {
+    if (planet.residents !== null && planet.residents.length != 0) {
       linksList.appendChild(links(planet.residents, residentsList));
     }
-    if (planet.films.length != 0) {
+    if (planet.films !== null && planet.films.length != 0) {
       linksList.appendChild(links(planet.films, filmsList));
     }
   };
@@ -429,6 +432,7 @@ let buildPlanetForm = data => {
 
 let buildSpeciesForm = data => {
   let article = document.createElement("article");
+  optionSelector.value = "species";
   let buildSpecies = species => {
     this.species = species;
     let img = document.createElement("img");
@@ -465,13 +469,14 @@ let buildSpeciesForm = data => {
     div.appendChild(img);
     div.appendChild(p);
     div.appendChild(linksList);
-    if (species.homeworld.length != 0) {
+    console.log(species.homeworld);
+    if (species.homeworld !== null && species.homeworld.length != 0) {
       linksList.appendChild(links(species.homeworld, homeworldList));
     }
-    if (species.people.length != 0) {
+    if (species.people !== null && species.people.length != 0) {
       linksList.appendChild(links(species.people, peopleList));
     }
-    if (species.films.length != 0) {
+    if (species.films !== null && species.films.length != 0) {
       linksList.appendChild(links(species.films, filmsList));
     }
   };
@@ -482,6 +487,7 @@ let buildSpeciesForm = data => {
 
 let buildVehiclesForm = data => {
   let article = document.createElement("article");
+  optionSelector.value = "vehicles";
   let buildVehicle = vehicles => {
     this.vehicle = vehicles;
     let img = document.createElement("img");
@@ -519,10 +525,10 @@ let buildVehiclesForm = data => {
     div.appendChild(img);
     div.appendChild(p);
     div.appendChild(linksList);
-    if (vehicle.pilots.length != 0) {
+    if (vehicle.pilots !== null && vehicle.pilots.length != 0) {
       linksList.appendChild(links(vehicle.pilots, pilotsList));
     }
-    if (vehicle.films.length != 0) {
+    if (vehicle.films !== null && vehicle.films.length != 0) {
       linksList.appendChild(links(vehicle.films, filmsList));
     }
   };
@@ -533,6 +539,7 @@ let buildVehiclesForm = data => {
 
 let buildStarshipsForm = data => {
   let article = document.createElement("article");
+  optionSelector.value = "starships";
   let buildStarship = starships => {
     this.starship = starships;
     let img = document.createElement("img");
@@ -572,10 +579,10 @@ let buildStarshipsForm = data => {
     div.appendChild(img);
     div.appendChild(p);
     div.appendChild(linksList);
-    if (starship.pilots.length != 0) {
+    if (starship.pilots !== null && starship.pilots.length != 0) {
       linksList.appendChild(links(starship.pilots, pilotsList));
     }
-    if (starship.films.length != 0) {
+    if (starship.films !== null && starship.films.length != 0) {
       linksList.appendChild(links(starship.films, filmsList));
     }
   };
