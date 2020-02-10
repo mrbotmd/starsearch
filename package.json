@@ -1,0 +1,26 @@
+{
+  "name": "starsearch",
+  "version": "1.0.0",
+  "description": "swapi search",
+  "main": "app.js",
+  "dependencies": {},
+  "devDependencies": {
+    "webpack": "^4.41.5"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mrbotmd/starsearch.git"
+  },
+  "keywords": [
+    "swapi"
+  ],
+  "author": "mrbotmd",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mrbotmd/starsearch/issues"
+  },
+  "homepage": "https://github.com/mrbotmd/starsearch#readme"
+}
