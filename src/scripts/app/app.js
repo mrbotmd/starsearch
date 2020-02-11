@@ -1,8 +1,13 @@
 "use strict";
-const searchResultField = document.querySelector(".search__result");
-const optionSelector = document.querySelector(".search__option-selector");
-const searchBtn = document.querySelector(".search__btn");
-const queryObject = document.querySelector(".search__input");
+
+import {
+  buildPaginator
+} from "./components/buildPaginator";
+import "./components/themeSwitcher";
+export const searchResultField = document.querySelector(".search__result");
+const optionSelector = document.querySelector(".search__form__option-selector");
+const searchBtn = document.querySelector(".search__form__btn");
+const queryObject = document.querySelector(".search__form__input");
 const rootURL = "https://swapi.co/api/";
 searchBtn.addEventListener("click", search);
 document.querySelector("form").addEventListener("submit", search);
@@ -13,7 +18,7 @@ async function search(e) {
   build(result);
 }
 
-async function apiCall(url) {
+export async function apiCall(url) {
   console.log(url);
   try {
     const res = await fetch(url);
@@ -56,7 +61,7 @@ function searchQuery() {
   }
 }
 
-function build(data) {
+export function build(data) {
   let propList = [
     "characters",
     "films",
@@ -69,69 +74,6 @@ function build(data) {
   console.log(data);
   buildPaginator(data);
   buildResultForm(data, propList);
-}
-
-function buildPaginator(data) {
-  function callPage(tag, url) {
-    tag.addEventListener("click", async function() {
-      let result = await apiCall(url);
-      build(result);
-    });
-  }
-  // build only next and previous pages
-  function buildNPPages(data) {
-    let nextPage = document.createElement("a");
-    let prevPage = document.createElement("a");
-    nextPage.setAttribute("href", "#/");
-    prevPage.setAttribute("href", "#/");
-    if (data.next && data.previous) {
-      prevPage.textContent = "Prev Page";
-      nextPage.textContent = "Next Page";
-      searchResultField.appendChild(prevPage);
-      searchResultField.appendChild(nextPage);
-      callPage(prevPage, data.previous);
-      callPage(nextPage, data.next);
-      return nextPage, prevPage;
-    } else if (data.next) {
-      nextPage.textContent = "Next Page";
-      searchResultField.appendChild(nextPage);
-      callPage(nextPage, data.next);
-      return nextPage;
-    } else if (!data.next && data.previous) {
-      prevPage.textContent = "Prev Page";
-      searchResultField.appendChild(prevPage);
-      callPage(prevPage, data.previous);
-      return prevPage;
-    } else {
-      return;
-    }
-    return nextPage, prevPage;
-  }
-  buildNPPages(data);
-
-  // Build all the pages at once
-  function buildAllPages(data) {
-    let urlList = [];
-    for (let i = 1; i <= data.count; i++) {
-      let url = data.next;
-      if (url != null) {
-        let nextPage = document.createElement("a");
-        url = data.next.slice(0, -1);
-        url += i;
-        nextPage.setAttribute("href", "#page=" + i);
-        nextPage.setAttribute("class", "nextPage");
-        nextPage.setAttribute("data-apilink", url);
-        nextPage.addEventListener("click", async function() {
-          let result = await apiCall(url);
-          build(result);
-        });
-        nextPage.textContent = "Page: " + i;
-        searchResultField.appendChild(nextPage);
-        urlList.push(url);
-      }
-    }
-    return urlList;
-  }
 }
 
 async function call(data) {
@@ -160,17 +102,20 @@ async function showLinks(data) {
   let linkData = await call(data);
   console.log(linkData.dataset);
   let ul = document.createElement("ul");
+  ul.setAttribute("class", "result__info-list");
   linkData.forEach(item => {
     let linkListItem = document.createElement("a");
     if (element.text == "films") {
       linkListItem.textContent = item.title;
       linkListItem.setAttribute("data-apilink", item);
       let linkLi = links(item.url, item.title);
+      linkLi.setAttribute("class", "result__info-list__item");
       linkLi.firstChild.removeEventListener("click", showLinks);
       linkLi.firstChild.addEventListener("click", buildNewPage);
       ul.appendChild(linkLi);
     } else {
       let linkLi = links(item.url, item.name);
+      linkLi.setAttribute("class", "result__info-list__item");
       linkLi.firstChild.removeEventListener("click", showLinks);
       linkLi.firstChild.addEventListener("click", buildNewPage);
       linkListItem.textContent = item.name;
@@ -186,6 +131,7 @@ function links(option, optionName) {
   let listItem = document.createElement("li");
   let linkTag = document.createElement("a");
   linkTag.setAttribute("href", "#/");
+  linkTag.setAttribute("class", "result__info-list__item-link");
   linkTag.setAttribute("data-apilink", option);
   linkTag.addEventListener("click", showLinks);
   linkTag.textContent = optionName;
@@ -230,21 +176,23 @@ function buildCharacterForm(buildItem, props) {
   }
   buildList.forEach(data => {
     let article = document.createElement("article");
+    article.setAttribute("class", "search-result__item");
     optionSelector.value = "people";
     let buildCharacter = character => {
       let img = document.createElement("img");
       let randomImg = "https://source.unsplash.com/random/150x150";
+      img.setAttribute("src", randomImg);
+      img.setAttribute("class", "result__img");
       let p = document.createElement("p");
+      p.setAttribute("class", "result__info-text");
       let linksList = document.createElement("ul");
-      linksList.setAttribute("class", "link-list");
-      let li = document.createElement("li");
+      linksList.setAttribute("class", "result__info-list");
       let articleHeader = document.createElement("header");
       let h1 = document.createElement("h1");
-      let div = document.createElement("div");
-
       h1.textContent = character.name;
       h1.setAttribute("data-apilink", character.url);
       h1.addEventListener("click", buildNewPage);
+      let div = document.createElement("div");
       div.setAttribute("class", "container--flex");
       p.innerHTML = `
           Height: ${character.height} <br />
@@ -254,17 +202,17 @@ function buildCharacterForm(buildItem, props) {
           Eye Color: ${character.eye_color} <br />
           Birth Year: ${character.birth_year} <br />
           Gender: ${character.gender} <br />`;
-      img.setAttribute("src", randomImg);
       articleHeader.appendChild(h1);
       article.appendChild(articleHeader);
       article.appendChild(div);
       div.appendChild(img);
       div.appendChild(p);
       div.appendChild(linksList);
-
       props.forEach(item => {
         if (character[item] != null && character[item].length != 0) {
-          linksList.appendChild(links(character[item], item));
+          linksList.appendChild(links(character[item], item)).setAttribute("class", "result__info-list__item");
+
+
         }
       });
     };
@@ -285,26 +233,30 @@ function buildFilmForm(buildItem, props) {
   }
   buildList.forEach(data => {
     let article = document.createElement("article");
+    article.setAttribute("class", "search-result__item");
     optionSelector.value = "films";
     let buildFilm = films => {
       let img = document.createElement("img");
       let randomImg = "https://source.unsplash.com/random/150x150";
       let p = document.createElement("p");
+      p.setAttribute("class", "result__info-text");
       let linksList = document.createElement("ul");
-      linksList.setAttribute("class", "link-list");
-      let li = document.createElement("li");
+      linksList.setAttribute("class", "result__info-list");
       let articleHeader = document.createElement("header");
       let h1 = document.createElement("h1");
-      let div = document.createElement("div");
-
       h1.textContent = films.title;
       h1.setAttribute("data-apilink", films.url);
       h1.addEventListener("click", buildNewPage);
+      let div = document.createElement("div");
       div.setAttribute("class", "container--flex");
       p.innerHTML = `
         Title: ${films.title} <br />
         Episode: ${films.episode_id} <br />
-        Opening crawl: ${films.opening_crawl} <br />
+        <details class="film-crawl">
+        <summary>
+        Opening crawl
+        </summary>
+        <p>${films.opening_crawl}</p></details> <br />
         Director: ${films.director} <br />
         Producer: ${films.producer} <br />
         Release Date: ${films.release_date} <br />`;
@@ -317,7 +269,7 @@ function buildFilmForm(buildItem, props) {
       div.appendChild(linksList);
       props.forEach(item => {
         if (films[item] != null && films[item].length != 0) {
-          linksList.appendChild(links(films[item], item));
+          linksList.appendChild(links(films[item], item)).setAttribute("class", "result__info-list__item");
         }
       });
     };
@@ -338,21 +290,21 @@ function buildPlanetForm(buildItem, props) {
   }
   buildList.forEach(data => {
     let article = document.createElement("article");
+    article.setAttribute("class", "search-result__item");
     optionSelector.value = "planets";
     let buildPlanet = planets => {
       let img = document.createElement("img");
       let randomImg = "https://source.unsplash.com/random/150x150";
       let p = document.createElement("p");
+      p.setAttribute("class", "result__info-text");
       let linksList = document.createElement("ul");
-      linksList.setAttribute("class", "link-list");
-      let li = document.createElement("li");
+      linksList.setAttribute("class", "result__info-list");
       let articleHeader = document.createElement("header");
       let h1 = document.createElement("h1");
-      let div = document.createElement("div");
-
       h1.textContent = planets.name;
       h1.setAttribute("data-apilink", planets.url);
       h1.addEventListener("click", buildNewPage);
+      let div = document.createElement("div");
       div.setAttribute("class", "container--flex");
       p.innerHTML = `
         Title: ${planets.name} <br />
@@ -374,7 +326,7 @@ function buildPlanetForm(buildItem, props) {
 
       props.forEach(item => {
         if (planets[item] != null && planets[item].length != 0) {
-          linksList.appendChild(links(planets[item], item));
+          linksList.appendChild(links(planets[item], item)).setAttribute("class", "result__info-list__item");
         }
       });
     };
@@ -395,21 +347,21 @@ function buildSpeciesForm(buildItem, props) {
   }
   buildList.forEach(data => {
     let article = document.createElement("article");
+    article.setAttribute("class", "search-result__item");
     optionSelector.value = "species";
     let buildSpecies = species => {
       let img = document.createElement("img");
       let randomImg = "https://source.unsplash.com/random/150x150";
       let p = document.createElement("p");
+      p.setAttribute("class", "result__info-text");
       let linksList = document.createElement("ul");
-      linksList.setAttribute("class", "link-list");
-      let li = document.createElement("li");
+      linksList.setAttribute("class", "result__info-list");
       let articleHeader = document.createElement("header");
       let h1 = document.createElement("h1");
-      let div = document.createElement("div");
-
       h1.textContent = species.name;
       h1.setAttribute("data-apilink", species.url);
       h1.addEventListener("click", buildNewPage);
+      let div = document.createElement("div");
       div.setAttribute("class", "container--flex");
       p.innerHTML = `
         Name: ${species.name} <br />
@@ -431,7 +383,7 @@ function buildSpeciesForm(buildItem, props) {
 
       props.forEach(item => {
         if (species[item] != null && species[item].length != 0) {
-          linksList.appendChild(links(species[item], item));
+          linksList.appendChild(links(species[item], item)).setAttribute("class", "result__info-list__item");
         }
       });
     };
@@ -452,21 +404,21 @@ function buildVehicleForm(buildItem, props) {
   }
   buildList.forEach(data => {
     let article = document.createElement("article");
+    article.setAttribute("class", "search-result__item");
     optionSelector.value = "vehicles";
     let buildVehicle = vehicles => {
       let img = document.createElement("img");
       let randomImg = "https://source.unsplash.com/random/150x150";
       let p = document.createElement("p");
+      p.setAttribute("class", "result__info-text");
       let linksList = document.createElement("ul");
-      linksList.setAttribute("class", "link-list");
-      let li = document.createElement("li");
+      linksList.setAttribute("class", "result__info-list");
       let articleHeader = document.createElement("header");
       let h1 = document.createElement("h1");
-      let div = document.createElement("div");
-
       h1.textContent = vehicles.name;
       h1.setAttribute("data-apilink", vehicles.url);
       h1.addEventListener("click", buildNewPage);
+      let div = document.createElement("div");
       div.setAttribute("class", "container--flex");
       p.innerHTML = `
         Title: ${vehicles.name} <br />
@@ -490,7 +442,7 @@ function buildVehicleForm(buildItem, props) {
 
       props.forEach(item => {
         if (vehicles[item] != null && vehicles[item].length != 0) {
-          linksList.appendChild(links(vehicles[item], item));
+          linksList.appendChild(links(vehicles[item], item)).setAttribute("class", "result__info-list__item");
         }
       });
     };
@@ -511,21 +463,21 @@ function buildStarshipForm(buildItem, props) {
   }
   buildList.forEach(data => {
     let article = document.createElement("article");
+    article.setAttribute("class", "search-result__item");
     optionSelector.value = "starships";
     let buildStarship = starships => {
       let img = document.createElement("img");
       let randomImg = "https://source.unsplash.com/random/150x150";
       let p = document.createElement("p");
+      p.setAttribute("class", "result__info-text");
       let linksList = document.createElement("ul");
-      linksList.setAttribute("class", "link-list");
-      let li = document.createElement("li");
+      linksList.setAttribute("class", "result__info-list");
       let articleHeader = document.createElement("header");
       let h1 = document.createElement("h1");
-      let div = document.createElement("div");
-
       h1.textContent = starships.name;
       h1.setAttribute("data-apilink", starships.url);
       h1.addEventListener("click", buildNewPage);
+      let div = document.createElement("div");
       div.setAttribute("class", "container--flex");
       p.innerHTML = `
         Title: ${starships.name} <br />
@@ -550,7 +502,7 @@ function buildStarshipForm(buildItem, props) {
       div.appendChild(linksList);
       props.forEach(item => {
         if (starships[item] != null && starships[item].length != 0) {
-          linksList.appendChild(links(starships[item], item));
+          linksList.appendChild(links(starships[item], item)).setAttribute("class", "result__info-list__item");
         }
       });
     };

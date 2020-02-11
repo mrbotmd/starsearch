@@ -1,0 +1,81 @@
+// $body-color: #DCDCE5;
+// $text-color: #3E3739;
+// $pink: #ffa7c4;
+@import 'theme-switch';
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+$color-scheme: ((light, #d23669, #ffa7c4, #222, #DCDCE5),
+  (dark, #DCDCE5, #f76f23, #fd9c2c, #282c35));
+
+@mixin theme($name, $primary, $secundary, $color, $background) {
+  .#{$name} {
+    background-color: $background;
+    color: $color;
+
+    a {
+      color: $primary;
+    }
+  }
+}
+
+@each $name,
+$primary,
+$secundary,
+$color,
+$background in $color-scheme {
+  @include theme($name, $primary, $secundary, $color, $background);
+}
+
+.container {
+  width: 100vw;
+  display: flex;
+  flex-flow: column;
+}
+
+.container--flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.search-result {
+  display: flex;
+  flex-flow: column;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.film-crawl {
+  cursor: pointer;
+  display: inline;
+  margin: 0;
+  max-width: 50%;
+
+  p {
+    // display: inline;
+    width: 200px;
+  }
+}
+
+.search {
+  height: 20vh;
+  display: flex;
+  // text-align: center;
+  justify-content: center;
+  align-items: center;
+
+  .search__form__option-selector,
+  .search__form__input,
+  .search__form__btn {
+    height: 3vh;
+  }
+}
