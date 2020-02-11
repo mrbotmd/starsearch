@@ -1,14 +1,16 @@
 {
   "name": "starsearch",
   "version": "1.0.0",
+  "private": true,
   "description": "swapi search",
   "main": "app.js",
   "dependencies": {},
   "devDependencies": {
-    "webpack": "^4.41.5"
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "webpack"
   },
   "repository": {
     "type": "git",
