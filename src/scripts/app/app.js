@@ -1,8 +1,6 @@
 "use strict";
 
-import {
-  buildPaginator
-} from "./components/buildPaginator";
+import { buildPaginator } from "./components/buildPaginator";
 import "./components/themeSwitcher";
 export const searchResultField = document.querySelector(".search__result");
 const optionSelector = document.querySelector(".search__form__option-selector");
@@ -102,20 +100,20 @@ async function showLinks(data) {
   let linkData = await call(data);
   console.log(linkData.dataset);
   let ul = document.createElement("ul");
-  ul.setAttribute("class", "result__info-list");
+  ul.setAttribute("class", "result__info-sublist");
   linkData.forEach(item => {
     let linkListItem = document.createElement("a");
     if (element.text == "films") {
       linkListItem.textContent = item.title;
       linkListItem.setAttribute("data-apilink", item);
       let linkLi = links(item.url, item.title);
-      linkLi.setAttribute("class", "result__info-list__item");
+      linkLi.setAttribute("class", "result__info-sublist__item");
       linkLi.firstChild.removeEventListener("click", showLinks);
       linkLi.firstChild.addEventListener("click", buildNewPage);
       ul.appendChild(linkLi);
     } else {
       let linkLi = links(item.url, item.name);
-      linkLi.setAttribute("class", "result__info-list__item");
+      linkLi.setAttribute("class", "result__info-sublist__item");
       linkLi.firstChild.removeEventListener("click", showLinks);
       linkLi.firstChild.addEventListener("click", buildNewPage);
       linkListItem.textContent = item.name;
@@ -133,7 +131,7 @@ function links(option, optionName) {
   linkTag.setAttribute("href", "#/");
   linkTag.setAttribute("class", "result__info-list__item-link");
   linkTag.setAttribute("data-apilink", option);
-  linkTag.addEventListener("click", showLinks);
+  linkTag.addEventListener("click", showLinks, { once: true });
   linkTag.textContent = optionName;
   listItem.appendChild(linkTag);
   return listItem;
@@ -210,9 +208,9 @@ function buildCharacterForm(buildItem, props) {
       div.appendChild(linksList);
       props.forEach(item => {
         if (character[item] != null && character[item].length != 0) {
-          linksList.appendChild(links(character[item], item)).setAttribute("class", "result__info-list__item");
-
-
+          linksList
+            .appendChild(links(character[item], item))
+            .setAttribute("class", "result__info-list__item");
         }
       });
     };
@@ -269,7 +267,9 @@ function buildFilmForm(buildItem, props) {
       div.appendChild(linksList);
       props.forEach(item => {
         if (films[item] != null && films[item].length != 0) {
-          linksList.appendChild(links(films[item], item)).setAttribute("class", "result__info-list__item");
+          linksList
+            .appendChild(links(films[item], item))
+            .setAttribute("class", "result__info-list__item");
         }
       });
     };
@@ -326,7 +326,9 @@ function buildPlanetForm(buildItem, props) {
 
       props.forEach(item => {
         if (planets[item] != null && planets[item].length != 0) {
-          linksList.appendChild(links(planets[item], item)).setAttribute("class", "result__info-list__item");
+          linksList
+            .appendChild(links(planets[item], item))
+            .setAttribute("class", "result__info-list__item");
         }
       });
     };
@@ -383,7 +385,9 @@ function buildSpeciesForm(buildItem, props) {
 
       props.forEach(item => {
         if (species[item] != null && species[item].length != 0) {
-          linksList.appendChild(links(species[item], item)).setAttribute("class", "result__info-list__item");
+          linksList
+            .appendChild(links(species[item], item))
+            .setAttribute("class", "result__info-list__item");
         }
       });
     };
@@ -442,7 +446,9 @@ function buildVehicleForm(buildItem, props) {
 
       props.forEach(item => {
         if (vehicles[item] != null && vehicles[item].length != 0) {
-          linksList.appendChild(links(vehicles[item], item)).setAttribute("class", "result__info-list__item");
+          linksList
+            .appendChild(links(vehicles[item], item))
+            .setAttribute("class", "result__info-list__item");
         }
       });
     };
@@ -502,7 +508,9 @@ function buildStarshipForm(buildItem, props) {
       div.appendChild(linksList);
       props.forEach(item => {
         if (starships[item] != null && starships[item].length != 0) {
-          linksList.appendChild(links(starships[item], item)).setAttribute("class", "result__info-list__item");
+          linksList
+            .appendChild(links(starships[item], item))
+            .setAttribute("class", "result__info-list__item");
         }
       });
     };
