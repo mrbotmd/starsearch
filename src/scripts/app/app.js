@@ -46,12 +46,14 @@ export async function apiCall(url) {
   }
 }
 
-function searchQuery() {
+function searchQuery(data) {
+  let searchParams = new URLSearchParams(data);
+  console.log(searchParams);
   if (queryObject.value) {
     return apiCall(
       `${rootURL}${optionSelector.value}/?search=${queryObject.value.replace(
         /\s/g,
-        "-"
+        "+"
       )}`
     );
   } else {

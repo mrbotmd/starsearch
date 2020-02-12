@@ -1,6 +1,3 @@
-// $body-color: #DCDCE5;
-// $text-color: #3E3739;
-// $pink: #ffa7c4;
 @import 'theme-switch';
 @import 'lightsaber';
 
@@ -11,7 +8,6 @@
   padding: 0;
 }
 
-body {}
 
 $color-scheme: ((light, #d23669, #ffa7c4, #222, #DCDCE5),
   (dark, #DCDCE5, #f76f23, #fd9c2c, #282c35));
