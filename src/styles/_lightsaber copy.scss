@@ -1,7 +1,7 @@
 #lightsaber {
   position: absolute;
   left: 43vw;
-  top: -25vh;
+  top: -29vh;
   width: 50px;
   margin: 0 auto;
   line-height: 0;
@@ -148,19 +148,6 @@
   background: -moz-linear-gradient(#4b3222, #2c1e15, #4b3222, #2c1e15, #4b3222, #2c1e15, #4b3222, #2c1e15, #4b3222, #2c1e15, #4b3222, #2c1e15, #4b3222, #2c1e15, #4b3222, #2c1e15, #4b3222, #2c1e15, #4b3222, #2c1e15, #4b3222, #2c1e15, #4b3222, #2c1e15);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.9) inset, 0 3px 3px -3px rgba(0, 0, 0, 1);
   z-index: 5;
-}
-
-.saber-light {
-  position: absolute;
-  left: 12px;
-  top: 0;
-  bottom: -12px;
-  right: 12px;
-  background: rgba(0, 0, 255, 0.05);
-  box-shadow: 0 0 12px rgba(0, 0, 255, 0.2);
-  -webkit-transition: all .8s;
-  -moz-transition: all .8s;
-  transition: all .8s;
 }
 
 .wings {

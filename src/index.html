@@ -6,70 +6,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
   <link rel="stylesheet" href="./styles/index.scss" />
-  <title>Document</title>
+  <title>SWAPI search</title>
 </head>
 
 <body id="body" class="light">
-  <div class="saber"></div>
-  <div id="lightsaber">
-    <span id="light"></span>
-    <span id="generator">
-      <span id="guard">
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-      </span>
-      <span id="handlestart">
-        <span></span>
-        <span></span>
-      </span>
-      <span id="handle">
-        <span></span>
-        <span></span>
-        <span></span><span></span>
-        <span></span><span></span>
-        <span></span><span></span>
-        <span></span><span></span>
-        <span></span><span></span>
-        <span></span><span></span>
-        <span></span><span></span>
-        <span></span><span></span>
-        <span class="long"></span>
-        <span class="long"></span>
-        <span class="box"></span>
-      </span>
-      <span class="wings">
-        <span class="wing wing1"></span>
-        <span class="wing wing2"></span>
-        <span class="wing wing3"></span>
-      </span>
-    </span>
-  </div>
   <div class="container container--flex">
+    <label class="switch">
+      <input class="switch-input" type="checkbox" id="mode-switch" />
+      <span class="switch-label" data-on="☾" data-off="☀"></span>
+      <span class="switch-handle"></span>
+    </label>
     <section class="search">
-
-      <h1 class="search__form__title">Star Wars search</h1>
+      <h1 class="search__form__title">SWAPI search</h1>
       <form class="search__form" action="get">
-        <label class="switch">
-          <input class="switch-input" type="checkbox" id="mode-switch" />
-          <span class="switch-label" data-on="☾" data-off="☀"></span>
-          <span class="switch-handle"></span>
-        </label>
-        <select class="search__form__option-selector" name="category">
-          <option class="search__form__option" value="films">Films</option>
-          <option class="search__form__option" value="people">People</option>
-          <option class="search__form__option" value="planets">Planets</option>
-          <option class="search__form__option" value="species">Species</option>
-          <option class="search__form__option" value="starships">Starships</option>
-          <option class="search__form__option" value="vehicles">Vehicles</option>
-        </select>
-        <input type="text" name="search-input" class="search__form__input" />
+        <div class="selector">
+          <select class="search__form__option-selector" name="category">
+            <option class="search__form__option" value="films">Films</option>
+            <option class="search__form__option" value="people">People</option>
+            <option class="search__form__option" value="planets">Planets</option>
+            <option class="search__form__option" value="species">Species</option>
+            <option class="search__form__option" value="starships">Starships</option>
+            <option class="search__form__option" value="vehicles">Vehicles</option>
+          </select>
+          <img class="ls-handle" src="./assets/images/lightsaber-1.png" alt="" />
+        </div>
+
+        <input type="search" name="search-input" class="search__form__input" placeholder="search the galaxy" />
         <button class="search__form__btn">Search</button>
       </form>
-
-
     </section>
     <main class="search__result"></main>
   </div>

@@ -17,13 +17,9 @@ async function search(e) {
 }
 
 export async function apiCall(url) {
-  console.log(url);
   try {
     const res = await fetch(url);
-    console.log("raw res", res);
     const data = await res.json();
-    console.log("data from fetch", data);
-    console.log(data);
     if (data.count) {
       let output = {
         output: data.results,
@@ -48,7 +44,6 @@ export async function apiCall(url) {
 
 function searchQuery(data) {
   let searchParams = new URLSearchParams(data);
-  console.log(searchParams);
   if (queryObject.value) {
     return apiCall(
       `${rootURL}${optionSelector.value}/?search=${queryObject.value.replace(
@@ -71,13 +66,11 @@ export function build(data) {
     "starships"
   ];
   clear();
-  console.log(data);
   buildPaginator(data);
   buildResultForm(data, propList);
 }
 
 async function call(data) {
-  console.log(data);
   let link = data.target.dataset.apilink;
   let linkArray = link.split(",");
   let result = [];
@@ -100,7 +93,6 @@ async function showLinks(data) {
   let parentElement = data.target.parentElement;
   let element = data.target;
   let linkData = await call(data);
-  console.log(linkData.dataset);
   let ul = document.createElement("ul");
   ul.setAttribute("class", "result__info-sublist");
   linkData.forEach(item => {
@@ -120,7 +112,6 @@ async function showLinks(data) {
       linkLi.firstChild.addEventListener("click", buildNewPage);
       linkListItem.textContent = item.name;
       linkListItem.setAttribute("data-apilink", item);
-      console.log(linkLi);
       ul.appendChild(linkLi);
     }
   });
@@ -158,11 +149,12 @@ function buildResultForm(data, propList) {
 
   function typeCheck(obj) {
     for (let key in builders) {
-      if (optionSelector.value == key) {
+      if (obj[0].url.includes(`api/${key}`)) {
         builders[key](obj, propList);
       }
     }
   }
+  typeCheck(item);
 }
 
 function buildCharacterForm(buildItem, props) {
