@@ -10,6 +10,24 @@ const rootURL = "https://swapi.co/api/";
 searchBtn.addEventListener("click", search);
 document.querySelector("form").addEventListener("submit", search);
 
+queryObject.addEventListener("input", function() {
+  if (queryObject.value) {
+    console.log("exist");
+    searchBtn.classList.add("glow");
+    searchBtn.textContent = "Dew It";
+  } else {
+    searchBtn.classList.remove("glow");
+    searchBtn.textContent = "Search";
+  }
+});
+
+searchBtn.addEventListener("mouseenter", function() {
+  searchBtn.textContent = "Dew It";
+});
+searchBtn.addEventListener("mouseleave", function() {
+  searchBtn.textContent = "Search";
+});
+
 async function search(e) {
   e.preventDefault();
   let result = await searchQuery();
