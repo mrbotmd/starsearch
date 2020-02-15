@@ -1,6 +1,7 @@
 import { searchResultField, apiCall, build } from "../app";
 
 export function buildPaginator(data) {
+  console.log(data);
   function callPage(tag, url) {
     tag.addEventListener("click", async function() {
       let result = await apiCall(url);

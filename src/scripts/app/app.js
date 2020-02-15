@@ -30,34 +30,19 @@ searchBtn.addEventListener("mouseleave", function() {
 
 async function search(e) {
   e.preventDefault();
+  clear();
+  let p = document.createElement("p");
+  p.textContent = "Fetching";
+  searchResultField.appendChild(p);
   let result = await searchQuery();
-  build(result);
-}
-
-export async function apiCall(url) {
-  try {
-    const res = await fetch(url);
-    const data = await res.json();
-    if (data.count) {
-      let output = {
-        output: data.results,
-        next: data.next,
-        previous: data.previous,
-        count: Math.ceil(data.count / 10)
-      };
-      return output;
-    } else if (data.count == 0) {
-      return;
-    } else return data;
-  } catch (err) {
-    if (err) {
-      let errorMessage = document.createElement("p");
-      errorMessage.setAttribute("class", "api-error");
-      errorMessage.textContent =
-        "Sorry, we coudn't reach the server. Try again.";
-      searchResultField.appendChild(errorMessage);
-    }
+  if (result == undefined) {
+    clear();
+    p.textContent = "Failed to search. Please try again";
+    searchResultField.appendChild(p);
+    return;
   }
+  console.log(result);
+  build(result);
 }
 
 function searchQuery(data) {
@@ -72,6 +57,80 @@ function searchQuery(data) {
   } else {
     return apiCall(`${rootURL}${optionSelector.value}/`);
   }
+}
+
+export async function apiCall(url) {
+  // try {
+  //   const res = await fetch(url);
+  //   const data = await res.json();
+  //   if (data.count) {
+  //     let output = {
+  //       output: data.results,
+  //       next: data.next,
+  //       previous: data.previous,
+  //       count: Math.ceil(data.count / 10)
+  //     };
+  //     return output;
+  //   } else if (data.count == 0) {
+  //     return;
+  //   } else return data;
+  // } catch (err) {
+  //   if (err) {
+  //     let errorMessage = document.createElement("p");
+  //     errorMessage.setAttribute("class", "api-error");
+  //     errorMessage.textContent =
+  //       "Sorry, we coudn't reach the server. Try again.";
+  //     searchResultField.appendChild(errorMessage);
+  //   }
+  // }
+
+  const res = await fetch(url)
+    // .then(handleError)
+    .then(res => {
+      // console.log(res);
+      return res.json();
+    })
+    .then(data => {
+      // console.log(data);
+      if (data.count) {
+        let output = {
+          output: data.results,
+          next: data.next,
+          previous: data.previous,
+          count: Math.ceil(data.count / 10)
+        };
+        // console.log("data.count", output);
+        return output;
+      } else if (data.count == 0) {
+        // console.log("else if", data);
+        return;
+      } else {
+        // console.log("else", data);
+        return data;
+      }
+    })
+    .catch(err => {
+      if (err) {
+        let errorMessage = document.createElement("p");
+        errorMessage.setAttribute("class", "api-error");
+        errorMessage.textContent =
+          "Sorry, we coudn't reach the server. Try again.";
+        searchResultField.appendChild(errorMessage);
+      }
+    });
+  function handleError(response) {
+    // console.log(response.text());
+    // if (!response.ok) {
+    //   throw Error(response.statusText);
+    // }
+
+    let resText = response.text();
+    console.log(resText);
+    let res = response;
+    console.log(res);
+    return [res, resText];
+  }
+  return res;
 }
 
 export function build(data) {
