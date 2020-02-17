@@ -28,19 +28,36 @@ searchBtn.addEventListener("mouseleave", function() {
   searchBtn.textContent = "Search";
 });
 
+function createSpinner() {
+  let spinner = document.createElement("div");
+  let innerSpinnerFirst = document.createElement("div");
+  let innerSpinnerSecond = document.createElement("div");
+  spinner.setAttribute("class", "spinner--dual-ring");
+  innerSpinnerFirst.setAttribute("class", "spinner__inner-1--dual-ring");
+  innerSpinnerSecond.setAttribute("class", "spinner__inner-2--dual-ring");
+  spinner.appendChild(innerSpinnerFirst);
+  spinner.appendChild(innerSpinnerSecond);
+  searchResultField.appendChild(spinner);
+}
+
+function isFetchFailed(fetchResult) {
+  let responseMessage = document.createElement("p");
+  responseMessage.setAttribute("class", "search__result__failed");
+  if (fetchResult == undefined) {
+    clear();
+    responseMessage.textContent =
+      "We couldn't reach the server. Please try again later";
+    searchResultField.appendChild(responseMessage);
+    return;
+  }
+}
+
 async function search(e) {
   e.preventDefault();
   clear();
-  let p = document.createElement("p");
-  p.textContent = "Fetching";
-  searchResultField.appendChild(p);
+  createSpinner();
   let result = await searchQuery();
-  if (result == undefined) {
-    clear();
-    p.textContent = "Failed to search. Please try again";
-    searchResultField.appendChild(p);
-    return;
-  }
+  isFetchFailed(result);
   console.log(result);
   build(result);
 }
@@ -60,30 +77,6 @@ function searchQuery(data) {
 }
 
 export async function apiCall(url) {
-  // try {
-  //   const res = await fetch(url);
-  //   const data = await res.json();
-  //   if (data.count) {
-  //     let output = {
-  //       output: data.results,
-  //       next: data.next,
-  //       previous: data.previous,
-  //       count: Math.ceil(data.count / 10)
-  //     };
-  //     return output;
-  //   } else if (data.count == 0) {
-  //     return;
-  //   } else return data;
-  // } catch (err) {
-  //   if (err) {
-  //     let errorMessage = document.createElement("p");
-  //     errorMessage.setAttribute("class", "api-error");
-  //     errorMessage.textContent =
-  //       "Sorry, we coudn't reach the server. Try again.";
-  //     searchResultField.appendChild(errorMessage);
-  //   }
-  // }
-
   const res = await fetch(url)
     // .then(handleError)
     .then(res => {
