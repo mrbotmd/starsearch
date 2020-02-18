@@ -7,12 +7,12 @@ const optionSelector = document.querySelector(".search__form__option-selector");
 const searchBtn = document.querySelector(".search__form__btn");
 const queryObject = document.querySelector(".search__form__input");
 const rootURL = "https://swapi.co/api/";
+
 searchBtn.addEventListener("click", search);
 document.querySelector("form").addEventListener("submit", search);
 
 queryObject.addEventListener("input", function() {
   if (queryObject.value) {
-    console.log("exist");
     searchBtn.classList.add("glow");
     searchBtn.textContent = "Dew It";
   } else {
@@ -37,33 +37,34 @@ function createSpinner() {
   innerSpinnerSecond.setAttribute("class", "spinner__inner-2--dual-ring");
   spinner.appendChild(innerSpinnerFirst);
   spinner.appendChild(innerSpinnerSecond);
-  searchResultField.appendChild(spinner);
+  return spinner;
 }
 
 function isFetchFailed(fetchResult) {
-  let responseMessage = document.createElement("p");
-  responseMessage.setAttribute("class", "search__result__failed");
-  if (fetchResult == undefined) {
-    clear();
-    responseMessage.textContent =
+  if (fetchResult === undefined) {
+    clear(searchResultField);
+    let failureMessage = document.createElement("p");
+    failureMessage.setAttribute("class", "search__result__failed");
+    failureMessage.textContent =
       "We couldn't reach the server. Please try again later";
-    searchResultField.appendChild(responseMessage);
+    searchResultField.appendChild(failureMessage);
     return;
   }
+  return fetchResult;
 }
 
 async function search(e) {
   e.preventDefault();
-  clear();
-  createSpinner();
+  clear(searchResultField);
+  searchResultField.appendChild(createSpinner());
   let result = await searchQuery();
-  isFetchFailed(result);
-  console.log(result);
+  if (result === undefined) {
+    return isFetchFailed(result);
+  }
   build(result);
 }
 
-function searchQuery(data) {
-  let searchParams = new URLSearchParams(data);
+function searchQuery() {
   if (queryObject.value) {
     return apiCall(
       `${rootURL}${optionSelector.value}/?search=${queryObject.value.replace(
@@ -78,13 +79,10 @@ function searchQuery(data) {
 
 export async function apiCall(url) {
   const res = await fetch(url)
-    // .then(handleError)
     .then(res => {
-      // console.log(res);
       return res.json();
     })
     .then(data => {
-      // console.log(data);
       if (data.count) {
         let output = {
           output: data.results,
@@ -92,37 +90,23 @@ export async function apiCall(url) {
           previous: data.previous,
           count: Math.ceil(data.count / 10)
         };
-        // console.log("data.count", output);
         return output;
       } else if (data.count == 0) {
-        // console.log("else if", data);
         return;
       } else {
-        // console.log("else", data);
         return data;
       }
     })
     .catch(err => {
       if (err) {
         let errorMessage = document.createElement("p");
-        errorMessage.setAttribute("class", "api-error");
+        errorMessage.setAttribute("class", "search__result__failed");
         errorMessage.textContent =
           "Sorry, we coudn't reach the server. Try again.";
         searchResultField.appendChild(errorMessage);
       }
     });
-  function handleError(response) {
-    // console.log(response.text());
-    // if (!response.ok) {
-    //   throw Error(response.statusText);
-    // }
 
-    let resText = response.text();
-    console.log(resText);
-    let res = response;
-    console.log(res);
-    return [res, resText];
-  }
   return res;
 }
 
@@ -135,7 +119,7 @@ export function build(data) {
     "vehicles",
     "starships"
   ];
-  clear();
+  clear(searchResultField);
   buildPaginator(data);
   buildResultForm(data, propList);
 }
@@ -155,13 +139,22 @@ async function call(data) {
 }
 
 async function buildNewPage(data) {
+  clear(searchResultField);
+  searchResultField.appendChild(createSpinner());
   let result = await call(data);
+  if (result === undefined) {
+    return isFetchFailed(result);
+  }
   build(result);
 }
 
 async function showLinks(data) {
   let parentElement = data.target.parentElement;
   let element = data.target;
+  console.log("parent", parentElement);
+  console.log("element", element);
+  let spinner = createSpinner();
+  parentElement.appendChild(spinner);
   let linkData = await call(data);
   let ul = document.createElement("ul");
   ul.setAttribute("class", "result__info-sublist");
@@ -185,6 +178,7 @@ async function showLinks(data) {
       ul.appendChild(linkLi);
     }
   });
+  parentElement.removeChild(spinner);
   parentElement.appendChild(ul);
 }
 
@@ -224,7 +218,6 @@ function buildResultForm(data, propList) {
       }
     }
   }
-  typeCheck(item);
 }
 
 function buildCharacterForm(buildItem, props) {
@@ -243,8 +236,8 @@ function buildCharacterForm(buildItem, props) {
     let buildCharacter = character => {
       let img = document.createElement("img");
       let randomImg = "https://source.unsplash.com/random/150x150";
-      img.setAttribute("src", randomImg);
       img.setAttribute("class", "result__img");
+      img.setAttribute("src", randomImg);
       let p = document.createElement("p");
       p.setAttribute("class", "result__info-text");
       let linksList = document.createElement("ul");
@@ -584,8 +577,8 @@ function buildStarshipForm(buildItem, props) {
   });
 }
 
-function clear() {
-  while (searchResultField.firstChild) {
-    searchResultField.removeChild(searchResultField.firstChild);
+function clear(target) {
+  while (target.firstChild) {
+    target.removeChild(target.firstChild);
   }
 }
