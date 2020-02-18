@@ -40,7 +40,7 @@ function createSpinner() {
   return spinner;
 }
 
-function isFetchFailed(fetchResult) {
+export function isFetchFailed(fetchResult) {
   if (fetchResult === undefined) {
     clear(searchResultField);
     let failureMessage = document.createElement("p");
@@ -231,13 +231,13 @@ function buildCharacterForm(buildItem, props) {
   }
   buildList.forEach(data => {
     let article = document.createElement("article");
-    article.setAttribute("class", "search-result__item");
+    article.setAttribute("class", "search__result__item");
     optionSelector.value = "people";
+    let img = document.createElement("img");
+    let randomImg = "https://source.unsplash.com/random/150x150";
+    img.setAttribute("class", "result__img");
+    img.setAttribute("src", randomImg);
     let buildCharacter = character => {
-      let img = document.createElement("img");
-      let randomImg = "https://source.unsplash.com/random/150x150";
-      img.setAttribute("class", "result__img");
-      img.setAttribute("src", randomImg);
       let p = document.createElement("p");
       p.setAttribute("class", "result__info-text");
       let linksList = document.createElement("ul");
@@ -288,7 +288,7 @@ function buildFilmForm(buildItem, props) {
   }
   buildList.forEach(data => {
     let article = document.createElement("article");
-    article.setAttribute("class", "search-result__item");
+    article.setAttribute("class", "search__result__item");
     optionSelector.value = "films";
     let buildFilm = films => {
       let img = document.createElement("img");
@@ -347,7 +347,7 @@ function buildPlanetForm(buildItem, props) {
   }
   buildList.forEach(data => {
     let article = document.createElement("article");
-    article.setAttribute("class", "search-result__item");
+    article.setAttribute("class", "search__result__item");
     optionSelector.value = "planets";
     let buildPlanet = planets => {
       let img = document.createElement("img");
@@ -406,7 +406,7 @@ function buildSpeciesForm(buildItem, props) {
   }
   buildList.forEach(data => {
     let article = document.createElement("article");
-    article.setAttribute("class", "search-result__item");
+    article.setAttribute("class", "search__result__item");
     optionSelector.value = "species";
     let buildSpecies = species => {
       let img = document.createElement("img");
@@ -465,7 +465,7 @@ function buildVehicleForm(buildItem, props) {
   }
   buildList.forEach(data => {
     let article = document.createElement("article");
-    article.setAttribute("class", "search-result__item");
+    article.setAttribute("class", "search__result__item");
     optionSelector.value = "vehicles";
     let buildVehicle = vehicles => {
       let img = document.createElement("img");
@@ -526,7 +526,7 @@ function buildStarshipForm(buildItem, props) {
   }
   buildList.forEach(data => {
     let article = document.createElement("article");
-    article.setAttribute("class", "search-result__item");
+    article.setAttribute("class", "search__result__item");
     optionSelector.value = "starships";
     let buildStarship = starships => {
       let img = document.createElement("img");

@@ -1,40 +1,49 @@
-import { searchResultField, apiCall, build } from "../app";
+import { searchResultField, apiCall, build, isFetchFailed } from "../app";
 
 export function buildPaginator(data) {
   function callPage(tag, url) {
     tag.addEventListener("click", async function() {
       let result = await apiCall(url);
+      if (result === undefined) {
+        return isFetchFailed(result);
+      }
       build(result);
     });
   }
   // build only next and previous pages
   function buildNPPages(data) {
+    let paginator = document.createElement("div");
     let nextPage = document.createElement("a");
     let prevPage = document.createElement("a");
+    paginator.setAttribute("class", "paginator");
     nextPage.setAttribute("href", "#/");
+    nextPage.setAttribute("class", "paginator__link");
     prevPage.setAttribute("href", "#/");
+    prevPage.setAttribute("class", "paginator__link");
     if (data.next && data.previous) {
       prevPage.textContent = "Prev Page";
       nextPage.textContent = "Next Page";
-      searchResultField.appendChild(prevPage);
-      searchResultField.appendChild(nextPage);
+      paginator.appendChild(prevPage);
+      paginator.appendChild(nextPage);
+      searchResultField.appendChild(paginator);
       callPage(prevPage, data.previous);
       callPage(nextPage, data.next);
       return nextPage, prevPage;
     } else if (data.next) {
       nextPage.textContent = "Next Page";
-      searchResultField.appendChild(nextPage);
+      paginator.appendChild(nextPage);
+      searchResultField.appendChild(paginator);
       callPage(nextPage, data.next);
       return nextPage;
     } else if (!data.next && data.previous) {
       prevPage.textContent = "Prev Page";
-      searchResultField.appendChild(prevPage);
+      paginator.appendChild(prevPage);
+      searchResultField.appendChild(paginator);
       callPage(prevPage, data.previous);
       return prevPage;
     } else {
       return;
     }
-    return nextPage, prevPage;
   }
   buildNPPages(data);
 

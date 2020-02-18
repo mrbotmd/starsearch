@@ -11,6 +11,11 @@ $pink: #d23669;
   padding: 0;
 }
 
+body {
+  overflow: hidden;
+  width: 100vw;
+}
+
 $color-scheme: (
   (light, #222, #222, #d23669, #dcdce5),
   (dark, #fff, #fff, #ffa7c4, #282c35)
@@ -116,136 +121,145 @@ $color-scheme: (
       }
     }
 
+    .paginator {
+      align-self: flex-end;
+    }
+
+    .paginator__link {
+      margin: 0 10px;
+      color: $link;
+    }
+
     .result__info-list {
       display: flex;
       list-style-type: none;
+    }
 
-      .result__info-list__item {
-        position: relative;
-        margin-left: 60px;
+    .result__info-list__item {
+      position: relative;
+      margin-left: 60px;
 
-        // Spinner TIE Fighter
-        // Pylot Cabin
-        .spinner--dual-ring {
-          display: inline-block;
+      // Spinner TIE Fighter
+      // Pylot Cabin
+      .spinner--dual-ring {
+        display: inline-block;
+        position: absolute;
+        top: 40px;
+        right: 40%;
+        border: 2px solid $link;
+        border-radius: 50%;
+        width: 13px;
+        height: 13px;
+        background-color: $tcolor;
+        z-index: 1;
+        animation: full-rotation 1.2s linear infinite;
+
+        // Pylot Wings Connector
+        &:before {
+          content: " ";
           position: absolute;
-          top: 40px;
-          right: 40%;
-          border: 2px solid $link;
-          border-radius: 50%;
-          width: 13px;
-          height: 13px;
+          top: 4px;
+          left: -10px;
+          width: 32px;
+          height: 5px;
+          border-radius: 20%;
           background-color: $tcolor;
           z-index: 1;
-          animation: full-rotation 1.2s linear infinite;
+        }
 
-          // Pylot Wings Connector
+        // Tie Wings
+        &:after {
+          content: " ";
+          position: absolute;
+          display: block;
+          top: -24px;
+          left: -24px;
+          width: 32px;
+          height: 32px;
+          margin: 8px;
+          border-radius: 50%;
+          border: 6px solid $tcolor;
+          border-color: transparent $link transparent $link;
+        }
+        // Inner glass frame
+        .spinner__inner-1--dual-ring {
+          position: absolute;
+          border-radius: 50%;
+          top: 4px;
+          left: 4px;
+          border: 1px solid $background;
+          width: 3px;
+          height: 3px;
+          z-index: 2;
+
           &:before {
             content: " ";
             position: absolute;
-            top: 4px;
-            left: -10px;
-            width: 32px;
-            height: 5px;
+            top: -3px;
+            left: 1px;
+            width: 1px;
+            height: 9px;
             border-radius: 20%;
-            background-color: $tcolor;
-            z-index: 1;
+            background-color: $background;
+            z-index: 2;
           }
 
-          // Tie Wings
           &:after {
             content: " ";
             position: absolute;
-            display: block;
-            top: -24px;
-            left: -24px;
-            width: 32px;
-            height: 32px;
-            margin: 8px;
-            border-radius: 50%;
-            border: 6px solid $tcolor;
-            border-color: transparent $link transparent $link;
-          }
-          // Inner glass frame
-          .spinner__inner-1--dual-ring {
-            position: absolute;
-            border-radius: 50%;
-            top: 4px;
-            left: 4px;
-            border: 1px solid $background;
-            width: 3px;
-            height: 3px;
-            z-index: 2;
-
-            &:before {
-              content: " ";
-              position: absolute;
-              top: -3px;
-              left: 1px;
-              width: 1px;
-              height: 9px;
-              border-radius: 20%;
-              background-color: $background;
-              z-index: 2;
-            }
-
-            &:after {
-              content: " ";
-              position: absolute;
-              top: -3px;
-              left: 1px;
-              width: 1px;
-              height: 9px;
-              border-radius: 20%;
-              transform: rotate(45deg);
-              background-color: $background;
-              z-index: 2;
-            }
-          }
-
-          // Outer glass frame
-          .spinner__inner-2--dual-ring {
-            position: absolute;
-            border-radius: 50%;
-            top: 1px;
+            top: -3px;
             left: 1px;
-            border: 1px solid $background;
-            width: 9px;
+            width: 1px;
             height: 9px;
+            border-radius: 20%;
+            transform: rotate(45deg);
+            background-color: $background;
             z-index: 2;
+          }
+        }
 
-            &:before {
-              content: " ";
-              position: absolute;
-              top: 0;
-              left: 4px;
-              width: 1px;
-              height: 9px;
-              border-radius: 20%;
-              transform: rotate(90deg);
-              background-color: $background;
-              z-index: 2;
-            }
+        // Outer glass frame
+        .spinner__inner-2--dual-ring {
+          position: absolute;
+          border-radius: 50%;
+          top: 1px;
+          left: 1px;
+          border: 1px solid $background;
+          width: 9px;
+          height: 9px;
+          z-index: 2;
 
-            &:after {
-              content: " ";
-              position: absolute;
-              top: 0;
-              left: 4px;
-              width: 1px;
-              height: 9px;
-              border-radius: 20%;
-              transform: rotate(135deg);
-              background-color: $background;
-              z-index: 2;
-            }
+          &:before {
+            content: " ";
+            position: absolute;
+            top: 0;
+            left: 4px;
+            width: 1px;
+            height: 9px;
+            border-radius: 20%;
+            transform: rotate(90deg);
+            background-color: $background;
+            z-index: 2;
+          }
+
+          &:after {
+            content: " ";
+            position: absolute;
+            top: 0;
+            left: 4px;
+            width: 1px;
+            height: 9px;
+            border-radius: 20%;
+            transform: rotate(135deg);
+            background-color: $background;
+            z-index: 2;
           }
         }
       }
+    }
 
-      .result__info-sublist {
-        margin-left: 20px;
-      }
+    .result__info-sublist {
+      margin-left: 20px;
     }
 
     // Spinner TIE Fighter
@@ -374,7 +388,8 @@ $color-scheme: (
 }
 
 .container {
-  width: 95vw;
+  width: 100%;
+  margin: 0 auto;
   display: flex;
   flex-flow: column;
 }
@@ -385,7 +400,7 @@ $color-scheme: (
   // align-items: center;
 }
 
-.search-result__item {
+.search__result__item {
   margin: 0 auto;
   display: flex;
   flex-flow: column;
@@ -394,13 +409,13 @@ $color-scheme: (
   width: 80vw;
 }
 
-.search-result {
-  display: flex;
-  flex-flow: column;
-  width: 100%;
-  justify-content: center;
-  align-content: center;
-}
+// .search__result {
+//   display: flex;
+//   flex-flow: column;
+//   width: 100%;
+//   justify-content: center;
+//   align-content: center;
+// }
 
 .film-crawl {
   cursor: pointer;
