@@ -30,7 +30,7 @@ searchBtn.addEventListener("mouseleave", function () {
   searchBtn.textContent = "Search";
 });
 
-function createSpinner() {
+export function createSpinner() {
   let spinner = document.createElement("div");
   let innerSpinnerFirst = document.createElement("div");
   let innerSpinnerSecond = document.createElement("div");
@@ -502,7 +502,7 @@ function buildVehicleForm(buildItem, props) {
         Passengers: ${vehicles.passengers} <br />
         Cargo Capacity: ${vehicles.cargo_capacity} <br />
         Consumables: ${vehicles.consumables} <br />
-        Vehicle Class: ${vehicles.vehicles_class} <br />`;
+        Vehicle Class: ${vehicles.vehicle_class} <br />`;
       articleHeader.appendChild(h1);
       article.appendChild(articleHeader);
       article.appendChild(div);
@@ -587,7 +587,7 @@ function buildStarshipForm(buildItem, props) {
   });
 }
 
-function clear(target) {
+export function clear(target) {
   while (target.firstChild) {
     target.removeChild(target.firstChild);
   }

@@ -121,7 +121,8 @@ $color-scheme: (
     }
 
     .paginator {
-      align-self: flex-end;
+      align-self: center;
+      width: 300px;
     }
 
     .paginator__link {

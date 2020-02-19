@@ -1,8 +1,17 @@
-import { searchResultField, apiCall, build, isFetchFailed } from "../app";
+import {
+  searchResultField,
+  apiCall,
+  build,
+  isFetchFailed,
+  createSpinner,
+  clear
+} from "../app";
 
 export function buildPaginator(data) {
   function callPage(tag, url) {
     tag.addEventListener("click", async function() {
+      clear(searchResultField);
+      searchResultField.appendChild(createSpinner());
       let result = await apiCall(url);
       if (result === undefined) {
         return isFetchFailed(result);
@@ -21,7 +30,7 @@ export function buildPaginator(data) {
     prevPage.setAttribute("href", "#/");
     prevPage.setAttribute("class", "paginator__link");
     if (data.next && data.previous) {
-      prevPage.textContent = "Prev Page";
+      prevPage.textContent = "Previous Page";
       nextPage.textContent = "Next Page";
       paginator.appendChild(prevPage);
       paginator.appendChild(nextPage);
@@ -36,7 +45,7 @@ export function buildPaginator(data) {
       callPage(nextPage, data.next);
       return nextPage;
     } else if (!data.next && data.previous) {
-      prevPage.textContent = "Prev Page";
+      prevPage.textContent = "Previous Page";
       paginator.appendChild(prevPage);
       searchResultField.appendChild(paginator);
       callPage(prevPage, data.previous);
@@ -70,4 +79,5 @@ export function buildPaginator(data) {
     }
     return urlList;
   }
+  // buildAllPages(data);
 }
