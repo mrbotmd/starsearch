@@ -2,18 +2,17 @@
 @import "lightsaber";
 @import "sw-font";
 
+$roboto-mono: "Roboto Mono", monospace;
 $light-pink: #ffa7c4;
 $pink: #d23669;
 
 * {
-  // box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
 body {
-  overflow: hidden;
-  width: 100vw;
+  font-family: $roboto-mono;
 }
 
 $color-scheme: (
@@ -61,7 +60,7 @@ $color-scheme: (
       display: flex;
       flex-flow: column;
       align-items: center;
-      justify-content: center;
+      justify-content: space-around;
     }
 
     .search__result__failed {
@@ -130,7 +129,50 @@ $color-scheme: (
       color: $link;
     }
 
+    .search__result__item {
+      margin-bottom: 40px;
+      display: flex;
+      flex-flow: column;
+      justify-content: center;
+      width: 100%;
+      min-height: 250px;
+
+      header {
+        h1 {
+          display: inline-block;
+          cursor: pointer;
+          margin-bottom: 20px;
+        }
+      }
+    }
+
+    .result__img {
+      align-self: center;
+    }
+
+    .result__info-text {
+      margin-left: 20px;
+      align-self: center;
+      width: 400px;
+    }
+
+    .film-crawl {
+      cursor: pointer;
+      display: inline;
+      margin: 0;
+
+      p {
+        max-height: 100px;
+        overflow: hidden;
+        overflow-y: scroll;
+        width: 250px;
+      }
+    }
+
     .result__info-list {
+      justify-content: center;
+      flex-grow: 2;
+      justify-self: flex-end;
       display: flex;
       list-style-type: none;
     }
@@ -259,7 +301,16 @@ $color-scheme: (
     }
 
     .result__info-sublist {
+      list-style-type: circle;
       margin-left: 20px;
+      overflow: hidden;
+      overflow-y: auto;
+      max-height: 200px;
+      // max-width: 200px;
+    }
+
+    .result__info-sublist__item {
+      list-style-type: circle;
     }
 
     // Spinner TIE Fighter
@@ -388,7 +439,7 @@ $color-scheme: (
 }
 
 .container {
-  width: 100%;
+  width: 80vw;
   margin: 0 auto;
   display: flex;
   flex-flow: column;
@@ -396,37 +447,6 @@ $color-scheme: (
 
 .container--flex {
   display: flex;
-  justify-content: center;
-  // align-items: center;
-}
-
-.search__result__item {
-  margin: 0 auto;
-  display: flex;
-  flex-flow: column;
-  align-items: center;
-  justify-self: center;
-  width: 80vw;
-}
-
-// .search__result {
-//   display: flex;
-//   flex-flow: column;
-//   width: 100%;
-//   justify-content: center;
-//   align-content: center;
-// }
-
-.film-crawl {
-  cursor: pointer;
-  display: inline;
-  margin: 0;
-  max-width: 50%;
-
-  p {
-    // display: inline;
-    width: 200px;
-  }
 }
 
 .search {

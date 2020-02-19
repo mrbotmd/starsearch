@@ -1,6 +1,8 @@
 "use strict";
 
-import { buildPaginator } from "./components/buildPaginator";
+import {
+  buildPaginator
+} from "./components/buildPaginator";
 import "./components/themeSwitcher";
 export const searchResultField = document.querySelector(".search__result");
 const optionSelector = document.querySelector(".search__form__option-selector");
@@ -11,7 +13,7 @@ const rootURL = "https://swapi.co/api/";
 searchBtn.addEventListener("click", search);
 document.querySelector("form").addEventListener("submit", search);
 
-queryObject.addEventListener("input", function() {
+queryObject.addEventListener("input", function () {
   if (queryObject.value) {
     searchBtn.classList.add("glow");
     searchBtn.textContent = "Dew It";
@@ -21,10 +23,10 @@ queryObject.addEventListener("input", function() {
   }
 });
 
-searchBtn.addEventListener("mouseenter", function() {
+searchBtn.addEventListener("mouseenter", function () {
   searchBtn.textContent = "Dew It";
 });
-searchBtn.addEventListener("mouseleave", function() {
+searchBtn.addEventListener("mouseleave", function () {
   searchBtn.textContent = "Search";
 });
 
@@ -188,7 +190,9 @@ function links(option, optionName) {
   linkTag.setAttribute("href", "#/");
   linkTag.setAttribute("class", "result__info-list__item-link");
   linkTag.setAttribute("data-apilink", option);
-  linkTag.addEventListener("click", showLinks, { once: true });
+  linkTag.addEventListener("click", showLinks, {
+    once: true
+  });
   linkTag.textContent = optionName;
   listItem.appendChild(linkTag);
   return listItem;
@@ -234,7 +238,7 @@ function buildCharacterForm(buildItem, props) {
     article.setAttribute("class", "search__result__item");
     optionSelector.value = "people";
     let img = document.createElement("img");
-    let randomImg = "https://source.unsplash.com/random/150x150";
+    let randomImg = "https://source.unsplash.com/collection/2081954/300x150";
     img.setAttribute("class", "result__img");
     img.setAttribute("src", randomImg);
     let buildCharacter = character => {
@@ -290,9 +294,11 @@ function buildFilmForm(buildItem, props) {
     let article = document.createElement("article");
     article.setAttribute("class", "search__result__item");
     optionSelector.value = "films";
+    let img = document.createElement("img");
+    let randomImg = "https://source.unsplash.com/collection/2081954/300x150";
+    img.setAttribute("src", randomImg);
+    img.setAttribute("class", "result__img");
     let buildFilm = films => {
-      let img = document.createElement("img");
-      let randomImg = "https://source.unsplash.com/random/150x150";
       let p = document.createElement("p");
       p.setAttribute("class", "result__info-text");
       let linksList = document.createElement("ul");
@@ -315,7 +321,7 @@ function buildFilmForm(buildItem, props) {
         Director: ${films.director} <br />
         Producer: ${films.producer} <br />
         Release Date: ${films.release_date} <br />`;
-      img.setAttribute("src", randomImg);
+
       articleHeader.appendChild(h1);
       article.appendChild(articleHeader);
       article.appendChild(div);
@@ -349,9 +355,11 @@ function buildPlanetForm(buildItem, props) {
     let article = document.createElement("article");
     article.setAttribute("class", "search__result__item");
     optionSelector.value = "planets";
+    let img = document.createElement("img");
+    let randomImg = "https://source.unsplash.com/collection/2081954/300x150";
+    img.setAttribute("src", randomImg);
+    img.setAttribute("class", "result__img");
     let buildPlanet = planets => {
-      let img = document.createElement("img");
-      let randomImg = "https://source.unsplash.com/random/150x150";
       let p = document.createElement("p");
       p.setAttribute("class", "result__info-text");
       let linksList = document.createElement("ul");
@@ -373,7 +381,6 @@ function buildPlanetForm(buildItem, props) {
         Terrain: ${planets.terrain} <br />
         Surface Water: ${planets.surface_water} <br />
         Population: ${planets.population} <br />`;
-      img.setAttribute("src", randomImg);
       articleHeader.appendChild(h1);
       article.appendChild(articleHeader);
       article.appendChild(div);
@@ -408,9 +415,11 @@ function buildSpeciesForm(buildItem, props) {
     let article = document.createElement("article");
     article.setAttribute("class", "search__result__item");
     optionSelector.value = "species";
+    let img = document.createElement("img");
+    let randomImg = "https://source.unsplash.com/collection/2081954/300x150";
+    img.setAttribute("src", randomImg);
+    img.setAttribute("class", "result__img");
     let buildSpecies = species => {
-      let img = document.createElement("img");
-      let randomImg = "https://source.unsplash.com/random/150x150";
       let p = document.createElement("p");
       p.setAttribute("class", "result__info-text");
       let linksList = document.createElement("ul");
@@ -432,7 +441,6 @@ function buildSpeciesForm(buildItem, props) {
         Eye Colors: ${species.eye_colors} <br />
         Average Lifespan: ${species.average_lifespan} <br />
         Language: ${species.language} <br />`;
-      img.setAttribute("src", randomImg);
       articleHeader.appendChild(h1);
       article.appendChild(articleHeader);
       article.appendChild(div);
@@ -467,9 +475,11 @@ function buildVehicleForm(buildItem, props) {
     let article = document.createElement("article");
     article.setAttribute("class", "search__result__item");
     optionSelector.value = "vehicles";
+    let img = document.createElement("img");
+    let randomImg = "https://source.unsplash.com/collection/2081954/300x150";
+    img.setAttribute("src", randomImg);
+    img.setAttribute("class", "result__img");
     let buildVehicle = vehicles => {
-      let img = document.createElement("img");
-      let randomImg = "https://source.unsplash.com/random/150x150";
       let p = document.createElement("p");
       p.setAttribute("class", "result__info-text");
       let linksList = document.createElement("ul");
@@ -493,7 +503,6 @@ function buildVehicleForm(buildItem, props) {
         Cargo Capacity: ${vehicles.cargo_capacity} <br />
         Consumables: ${vehicles.consumables} <br />
         Vehicle Class: ${vehicles.vehicles_class} <br />`;
-      img.setAttribute("src", randomImg);
       articleHeader.appendChild(h1);
       article.appendChild(articleHeader);
       article.appendChild(div);
@@ -528,9 +537,11 @@ function buildStarshipForm(buildItem, props) {
     let article = document.createElement("article");
     article.setAttribute("class", "search__result__item");
     optionSelector.value = "starships";
+    let img = document.createElement("img");
+    let randomImg = "https://source.unsplash.com/collection/2081954/300x150";
+    img.setAttribute("src", randomImg);
+    img.setAttribute("class", "result__img");
     let buildStarship = starships => {
-      let img = document.createElement("img");
-      let randomImg = "https://source.unsplash.com/random/150x150";
       let p = document.createElement("p");
       p.setAttribute("class", "result__info-text");
       let linksList = document.createElement("ul");
@@ -555,8 +566,7 @@ function buildStarshipForm(buildItem, props) {
         Consumables: ${starships.consumables} <br />
         Hyperdrive Rating: ${starships.hyperdrive_rating} <br />
         MGLT: ${starships.MGLT} <br />
-        Starship Class: ${starships.starships_class} <br />`;
-      img.setAttribute("src", randomImg);
+        Starship Class: ${starships.starship_class} <br />`;
       articleHeader.appendChild(h1);
       article.appendChild(articleHeader);
       article.appendChild(div);
