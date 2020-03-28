@@ -2,11 +2,13 @@
   "name": "starsearch",
   "version": "1.0.0",
   "private": true,
+  "homepage": "https://github.com/mrbotmd/starsearch#readme",
   "description": "swapi search",
   "main": "index.js",
   "dependencies": {
     "@babel/polyfill": "^7.8.3",
-    "core-js": "^3.6.4"
+    "core-js": "^3.6.4",
+    "gh-pages": "^2.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",
@@ -36,7 +38,9 @@
   },
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack --config webpack/webpack.config.prod.js  --colors",
-    "start": "webpack-dev-server --open --config webpack/webpack.config.dev.js"
+    "start": "webpack-dev-server --open --config webpack/webpack.config.dev.js",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "repository": {
     "type": "git",
@@ -49,6 +53,5 @@
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/mrbotmd/starsearch/issues"
-  },
-  "homepage": "https://github.com/mrbotmd/starsearch#readme"
+  }
 }
