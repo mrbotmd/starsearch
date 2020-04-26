@@ -1,6 +1,6 @@
 import React from "react";
 
-import "./homepage.styles.scss";
+import "./HomePage.styles.scss";
 
 class HomePage extends React.Component {
   constructor(props) {
