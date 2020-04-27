@@ -1,13 +1,21 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 
-import "./nav.style.scss";
+import "./Nav.style.scss";
 
 const Nav = () => (
   <nav>
     <ul>
-      <li>Home</li>
-      <li>Races</li>
-      <li>About</li>
+      <li>
+        <NavLink exact to="/" activeClassName="active">
+          Home
+        </NavLink>
+      </li>
+      <li>
+        <NavLink to="/about" activeClassName="active">
+          About
+        </NavLink>
+      </li>
     </ul>
   </nav>
 );
