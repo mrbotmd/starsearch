@@ -1,8 +1,5 @@
 import React from "react";
 
-import Nav from "../../components/Nav/Nav";
-import Search from "../../components/Search/Search";
-
 import "./HomePage.styles.scss";
 
 class HomePage extends React.Component {
@@ -17,10 +14,9 @@ class HomePage extends React.Component {
   };
 
   render() {
+    console.log("props from HomePage", this.props);
     return (
       <div className="container">
-        <Nav />
-        <Search {...this.props} />
         <button onClick={this.showState}>HomePage state</button>
       </div>
     );

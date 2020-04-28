@@ -22,7 +22,7 @@ const ResultItem = (props) => {
 
         return (
           <div key={item.id}>
-            <Link onClick={props.makeArticleQuery} to={{}}>
+            <Link onClick={props.makeArticleCall} to={{}}>
               {item.title}
             </Link>
 

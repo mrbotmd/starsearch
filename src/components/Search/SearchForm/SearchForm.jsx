@@ -4,7 +4,8 @@ import { Link } from "react-router-dom";
 import "./SearchForm.style.scss";
 
 const SearchForm = (props) => {
-  console.log(props);
+  console.log("props.state from SearchForm", props.state);
+  console.log("props from SearchForm", props);
   const options = [10, 25, 50];
   return (
     <div>
@@ -15,12 +16,12 @@ const SearchForm = (props) => {
         onClick={props.makeSearchCall}
         to={
           {
-            //   pathname: `/wiki/${this.state.searchQuery.query}`,
+            // pathname: `/search/${props.searchQuery.query}`,
             // state: this.state,
           }
         }
       >
-        {props.state.query}
+        {props.searchQuery.query}
       </Link>
       <form action="" onSubmit={props.handleForm}>
         <input type="text" name="" id="" onChange={props.handleQueryInput} />
