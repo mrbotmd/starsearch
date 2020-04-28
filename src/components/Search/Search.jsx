@@ -1,45 +1,50 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import SearchForm from "./SearchForm/SearchForm";
 
 import "./Search.style.scss";
 
 class Search extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { searchQuery: { query: "", limit: 25, batch: 1 } };
+    this.state = { searchQuery: { query: "", limit: 10, batch: 1 } };
+    this.proxy = new URL("https://cors-anywhere.herokuapp.com/");
+    this.originApi = new URL("https://starcraft.fandom.com/api/v1/");
     this.controller = new AbortController();
     this.signal = this.controller.signal;
-    // this.history = useHistory();
   }
-  makeSearchQuery = (query, limit, batch = 1) => {
-    const proxy = new URL("https://cors-anywhere.herokuapp.com/");
-    const originApi = new URL(
-      "https://starcraft.fandom.com/api/v1/Search/List"
-    );
-    originApi.searchParams.set("query", query);
-    originApi.searchParams.set("limit", limit);
-    originApi.searchParams.set("batch", batch);
 
-    return new URL(proxy + originApi);
+  makeSearchCall = () => {
+    const { query, limit, batch } = this.state.searchQuery;
+    const searchApi = new URL(this.originApi + "Search/List");
+    searchApi.searchParams.set("query", query);
+    searchApi.searchParams.set("limit", limit);
+    searchApi.searchParams.set("batch", batch);
+
+    const searchQuery = new URL(this.proxy + searchApi);
+    this.apiCall(searchQuery);
   };
 
-  apiCall = () => {
-    const { query, limit, batch } = this.state.searchQuery;
-    const temp = new URL(this.makeSearchQuery(query, limit, batch));
+  makeArticleQuery = () => {
+    const pageId = "";
+    console.log("clicked");
+  };
+
+  apiCall = (url) => {
     console.log("fetching");
-    // console.log(temp.search);
-    console.log(temp);
-    fetch(temp, { method: "get", signal: this.signal })
+
+    fetch(url, { method: "get", signal: this.signal })
       .then((res) => res.json())
       .then((res) => {
         console.log(`Fetch complete. (Not aborted)`);
         return res;
       })
       .then((data) => this.setState({ result: { ...data } }))
-      // .then(() => console.log(this.state))
       .then(() => {
-        this.props.history.push(`/wiki/${this.state.searchQuery.query}`);
-        this.props.history.location.state = { ...this.state.result };
+        this.props.history.push({
+          pathname: `/search/${this.state.searchQuery.query}`,
+          state: { ...this.state.result },
+          makeArticleQuery: { ...this.makeArticleQuery },
+        });
       })
       .catch((err) => console.log(err));
   };
@@ -50,23 +55,7 @@ class Search extends React.Component {
     this.controller.abort();
   };
 
-  buildPaginator = () => {
-    const pages = [];
-    for (let i = 1; i < this.state.batches; i++) {
-      pages.push(i);
-    }
-    return (
-      <div>
-        {pages.map((page, i) => (
-          <Link to={`/${page}`} key={i}>
-            {page}
-          </Link>
-        ))}
-      </div>
-    );
-  };
-
-  handleInput = (e) => {
+  handleQueryInput = (e) => {
     e.preventDefault();
     this.setState(
       {
@@ -78,6 +67,22 @@ class Search extends React.Component {
       // () => console.log(this.state)
     );
   };
+  handleLimitInput = (e) => {
+    e.preventDefault();
+    this.setState(
+      {
+        searchQuery: {
+          ...this.state.searchQuery,
+          limit: e.target.value,
+        },
+      }
+      // () => console.log(this.state)
+    );
+  };
+  handleForm = (e) => {
+    e.preventDefault();
+    this.makeSearchCall();
+  };
 
   showState = () => {
     console.log(this.state);
@@ -88,21 +93,15 @@ class Search extends React.Component {
   render() {
     return (
       <div>
-        <button onClick={this.apiCall}>fetch</button>
-        <button onClick={this.abort}>abort</button>
-        <button onClick={this.showState}>Search component state</button>
-        <Link
-          onClick={this.apiCall}
-          to={{
-            //   pathname: `/wiki/${this.state.searchQuery.query}`,
-            state: this.state,
-          }}
-        >
-          {this.state.searchQuery.query}
-        </Link>
-        <form action="" onSubmit={this.handleInput}>
-          <input type="text" name="" id="" onChange={this.handleInput} />
-        </form>
+        <SearchForm
+          makeSearchCall={this.makeSearchCall}
+          handleQueryInput={this.handleQueryInput}
+          handleLimitInput={this.handleLimitInput}
+          handleForm={this.handleForm}
+          abort={this.abort}
+          showState={this.showState}
+          state={this.state.searchQuery}
+        />
       </div>
     );
   }
